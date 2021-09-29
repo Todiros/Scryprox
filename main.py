@@ -8,12 +8,20 @@ from rich.console import Console
 from rich import print
 from rich.progress import track
 
+""" Launch the app from here.
+
+It requires a JSON file with a card collection exported from Scryfall in a List format. 
+The file should be placed into the `input/` directory. Otherwise the script will fail.  
+"""
+
 console = Console()
 
 parse_id(console)
 scry_cards(console)
 combine_data(console)
 
+# Count of unique cards and total cards.
+# FIXME: change the variable names to be more accurate.
 uniqueCount = get_unique_total()
 totalCount = get_card_total()
 
