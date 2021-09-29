@@ -1,0 +1,8 @@
+png/
+.vscode/
+dev/
+src/__pycache__
+input/*
+!input/README.txt
+json/*
+pdf/*
