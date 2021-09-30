@@ -10,7 +10,7 @@ from rich.progress import track
 
 """ Launch the app from here.
 
-It requires a JSON file with a card collection exported from Scryfall in a List format. 
+It requires a JSON file with a card collection exported from Scryfall. 
 The file should be placed into the `input/` directory. Otherwise the script will fail.  
 """
 

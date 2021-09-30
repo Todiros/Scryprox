@@ -21,22 +21,25 @@ def parse_id(console):
 
     # Checks the user has entered a filename and load the JSON file. 
     if len(filename) > 0:
-        cardData = json.load(open('input/' + filename))
+        deckData = json.load(open('input/' + filename))
         
     # Uncomment the line below if you want to bypass the file input and use hardcoded filename.    
     # cardData = json.load(open('input/lands.json'))
-    cardData = cardData['entries']['columna']
 
     cardIds = []
-    for card in cardData:
-        # If the key 'card_digest' does not exist or its empty, the item is not a valid card. 
-        if card['card_digest'] is not None:
-            cardIds.append(
-                {
-                    'id': card['card_digest']['id'], 
-                    'count': card['count']
-                }
-            )
+    # This loop goes through each category / section. (commanders, lands, nonlands, sideboard, etc.)
+    for section in deckData['entries']:
+        cardData = deckData['entries'][section]
+        
+        for card in cardData:
+            # If the key 'card_digest' does not exist or its empty, the item is not a valid card. 
+            if card['card_digest'] is not None:
+                cardIds.append(
+                    {
+                        'id': card['card_digest']['id'], 
+                        'count': card['count']
+                    }
+                )
 
     """ The result JSON has to be formated in this way to be accepted later by the Scryfall API.
 
