@@ -3,7 +3,7 @@ from fpdf import FPDF
 from datetime import datetime
 import os
 
-def create_pdf(console, print, track, totalCount):
+def create_pdf(console, print, track, totalCount, filename):
     """ Imports the card images into a PDF file and saves the file. 
 
         It open and reads pre-generated JSON file with the image names and count. 
@@ -33,11 +33,12 @@ def create_pdf(console, print, track, totalCount):
     pdf = PDF('P', 'mm', 'A4')
     pdf.set_font('Helvetica', 'B', 14)
 
-    spacer = 2
+    spacer = 2.5
     cardWidth = 63
     cardHeight = 88
+    # CHANGED, prev = 8
     startX = 8
-    startY = 15
+    startY = 14
 
     nextX = startX
     nextY = startY
@@ -105,8 +106,11 @@ def create_pdf(console, print, track, totalCount):
     dateStr = now.strftime("%d-%m-%y-%H-%M")
     PDF_PATH = 'pdf/'
 
-    # pdf/proxies-29-09-21-05-23.pdf
-    filename = PDF_PATH + 'proxies-' + dateStr + '.pdf'
+    # Removes source filename extention
+    filename = filename[:-5]
+
+    # pdf/[sourceFilename]-29-09-21-05-23.pdf
+    completefilename = PDF_PATH + filename + "-" + dateStr + '.pdf'
 
     console.print("\nGenerating file...", style="yellow")
 
@@ -117,5 +121,5 @@ def create_pdf(console, print, track, totalCount):
         pass    
     
     # Exports the compiled PDF
-    pdf.output(filename, 'F')
-    console.print("\nGENERATED FILE: ", filename, "\n", style="bold green")
+    pdf.output(completefilename, 'F')
+    console.print("\nGENERATED FILE: ", completefilename, "\n", style="bold green")

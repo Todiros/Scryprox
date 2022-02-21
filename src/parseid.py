@@ -17,14 +17,16 @@ def parse_id(console):
             -> cards_ids.json (id, count)
     """
 
+    INPUT_PATH = "input/"
+    DEFAULT_FILENAME = "Lands.json"
+    
     filename = input('\nEnter the filename of your collection (with .json): ')
 
-    # Checks the user has entered a filename and load the JSON file. 
-    if len(filename) > 0:
-        deckData = json.load(open('input/' + filename))
-        
-    # Uncomment the line below if you want to bypass the file input and use hardcoded filename.    
-    # cardData = json.load(open('input/lands.json'))
+    # Checks if the filename has not been entered by the user
+    if len(filename) == 0:
+        filename = DEFAULT_FILENAME
+
+    deckData = json.load(open(INPUT_PATH + filename))
 
     cardIds = []
     # This loop goes through each category / section. (commanders, lands, nonlands, sideboard, etc.)
@@ -65,3 +67,5 @@ def parse_id(console):
         json.dump(cardIdsDict, f, ensure_ascii=False, indent=4)
 
     console.print("GENERATED FILE: ", jsonFilename, style="green")
+
+    return filename

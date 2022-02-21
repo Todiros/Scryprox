@@ -3,6 +3,7 @@ png/
 dev/
 src/__pycache__
 input/*
-!input/README.txt
+!input/Lands.json
+!input/_README.txt
 json/*
 pdf/*

@@ -16,7 +16,7 @@ The file should be placed into the `input/` directory. Otherwise the script will
 
 console = Console()
 
-parse_id(console)
+filename = parse_id(console)
 scry_cards(console)
 combine_data(console)
 
@@ -26,4 +26,4 @@ uniqueCount = get_unique_total()
 totalCount = get_card_total()
 
 download_imgs(console, print, track, uniqueCount)
-create_pdf(console, print, track, totalCount)
+create_pdf(console, print, track, totalCount, filename)
