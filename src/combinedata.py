@@ -1,4 +1,5 @@
 import json
+import re
 
 def combine_data(console):
     """ Filters and combines the data from two JSON file into one final JSON. 
@@ -22,7 +23,7 @@ def combine_data(console):
     )
 
     rawCardData = json.load(
-        open('json/raw_card_data.json')
+        open('json/raw_card_data.json', encoding='utf-8')
     )
 
     cardList = rawCardData['data']
@@ -33,11 +34,11 @@ def combine_data(console):
         cardCount += 1
         cardSet = cardData['set']
         cardId = cardData['id']
-        cardCollectorNum = cardData['collector_number']
+        cardCollectorNum = re.sub('\D', '', cardData['collector_number'])
         
         # Some cards are double faced, so two separate filenames have to be generated. 
         # Checks if the current card is double faced. 
-        if 'card_faces' in cardData:
+        if ('card_faces' in cardData) and ('image_uris' in cardData['card_faces'][0]):
             cardName = cardData['card_faces'][0]['name']
             cardBackName = cardData['card_faces'][1]['name']
             
@@ -80,7 +81,7 @@ def combine_data(console):
                         }
                     )
         else:
-            cardName = cardData['name']
+            cardName = cardData['name'].replace("//", "").replace("  ", " ")
             cardFilename = cardSet + '-' + cardCollectorNum + '-' + cardName.replace(" ", "-").lower() + '.png'
             
             for inputCard in cardIds['identifiers']:

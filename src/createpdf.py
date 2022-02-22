@@ -28,15 +28,18 @@ def create_pdf(console, print, track, totalCount, filename):
             self.set_y(-15) # Position at 1.5 cm from bottom
             self.set_font('Arial', 'I', 8)
             self.cell(0, 20, 'Page ' + str(self.page_no()), 0, 0, 'R') # Page number
+            self.set_line_width(0.0)
 
     # Sets the orientation, units and format of the page.
     pdf = PDF('P', 'mm', 'A4')
     pdf.set_font('Helvetica', 'B', 14)
 
+    pdf_w = 210
+    pdf_h = 297
+
     spacer = 2.5
     cardWidth = 63
     cardHeight = 88
-    # CHANGED, prev = 8
     startX = 8
     startY = 14
 
@@ -56,6 +59,16 @@ def create_pdf(console, print, track, totalCount, filename):
         # This loop goes through each copy of a unique card. 
         i = card['count']
         while i > 0:
+            # Adds vertical cutting lines to the PDF.
+            if (nextY == startY):
+                pdf.line(nextX, 0, nextX, pdf_h)
+                pdf.line(nextX + cardWidth, 0, nextX + cardWidth, pdf_h)
+
+            # Adds horizontal cutting lines to the PDF.
+            if (nextX == startX):
+                pdf.line(0, nextY, pdf_w, nextY)
+                pdf.line(0, nextY + cardHeight, pdf_w, nextY + cardHeight)
+            
             pdf.image('png/'+card['filename'], nextX, nextY, cardWidth, cardHeight)
             totalCards += 1
             print(card['filename'] + " has been added to the PDF. [", totalCards, "/", totalCount, "]")
@@ -81,6 +94,16 @@ def create_pdf(console, print, track, totalCount, filename):
             # If the key 'filename_back' exist, the card is double-faced,
             # and a second image (of the back) needs to added to the PDF.
             if 'filename_back' in card:
+                # Adds vertical cutting lines to the PDF.
+                if (nextY == startY):
+                    pdf.line(nextX, 0, nextX, pdf_h)
+                    pdf.line(nextX + cardWidth, 0, nextX + cardWidth, pdf_h)
+
+                # Adds horizontal cutting lines to the PDF.
+                if (nextX == startX):
+                    pdf.line(0, nextY, pdf_w, nextY)
+                    pdf.line(0, nextY + cardHeight, pdf_w, nextY + cardHeight)
+            
                 pdf.image('png/'+card['filename_back'], nextX, nextY, cardWidth, cardHeight)
                 totalCards += 1
                 print(card['filename_back'] + " has been added to the PDF. [", totalCards, "/", totalCount, "]")

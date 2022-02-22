@@ -2,6 +2,7 @@ import urllib.request
 import json
 import os
 import time
+import re
 
 def download_imgs(console, print, track, uniqueCount):
     """ Downloads card images from Scryfall API. 
@@ -18,7 +19,7 @@ def download_imgs(console, print, track, uniqueCount):
     console.print("\nInitiating download...\n", style="bold yellow")
     
     rawCardData = json.load(
-        open('json/raw_card_data.json')
+        open('json/raw_card_data.json', encoding='utf-8')
     )
 
     cardList = rawCardData['data']
@@ -34,12 +35,12 @@ def download_imgs(console, print, track, uniqueCount):
     # Using track() from the rich package. It creates a progress bar in the console. 
     for cardData in track(cardList, description="[magenta]Downloading... "):
         cardSet = cardData['set']
-        cardCollectorNum = cardData['collector_number']
+        cardCollectorNum = re.sub('\D', '', cardData['collector_number'])
 
         cardBackImgUri = ''
         # Some cards are double faced, so two separate images have to be downloaded. 
         # Checks if the current card is double faced. 
-        if 'card_faces' in cardData:
+        if ('card_faces' in cardData) and ('image_uris' in cardData['card_faces'][0]):
             cardImgUri = cardData['card_faces'][0]['image_uris']['png']
             cardBackImgUri = cardData['card_faces'][1]['image_uris']['png']
             cardName = cardData['card_faces'][0]['name']
@@ -78,7 +79,7 @@ def download_imgs(console, print, track, uniqueCount):
             print(cardBackFilename + " downloaded.")
         else:
             cardImgUri = cardData['image_uris']['png']
-            cardName = cardData['name']
+            cardName = cardData['name'].replace("//", "").replace("  ", " ")
             cardFilename = cardSet + '-' + cardCollectorNum + '-' + cardName.replace(" ", "-").lower() + '.png'
             
             # Downloading the image of a single-faced card.
