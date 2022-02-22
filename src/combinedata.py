@@ -81,6 +81,7 @@ def combine_data(console):
                         }
                     )
         else:
+            # Removes the '//' from the name of any split layout card (Wear // Tear)
             cardName = cardData['name'].replace("//", "").replace("  ", " ")
             cardFilename = cardSet + '-' + cardCollectorNum + '-' + cardName.replace(" ", "-").lower() + '.png'
             

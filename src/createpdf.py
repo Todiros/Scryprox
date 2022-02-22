@@ -34,6 +34,7 @@ def create_pdf(console, print, track, totalCount, filename):
     pdf = PDF('P', 'mm', 'A4')
     pdf.set_font('Helvetica', 'B', 14)
 
+    # A4 page size in mm
     pdf_w = 210
     pdf_h = 297
 

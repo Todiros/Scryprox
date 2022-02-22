@@ -39,7 +39,9 @@ def download_imgs(console, print, track, uniqueCount):
 
         cardBackImgUri = ''
         # Some cards are double faced, so two separate images have to be downloaded. 
-        # Checks if the current card is double faced. 
+        # Checks if the current card is double faced. Checking for 'card_faces' only 
+        # will not work since split layout cards (Wear // Tear) will have two faces 
+        # but they won't have front or back images.
         if ('card_faces' in cardData) and ('image_uris' in cardData['card_faces'][0]):
             cardImgUri = cardData['card_faces'][0]['image_uris']['png']
             cardBackImgUri = cardData['card_faces'][1]['image_uris']['png']
@@ -79,6 +81,7 @@ def download_imgs(console, print, track, uniqueCount):
             print(cardBackFilename + " downloaded.")
         else:
             cardImgUri = cardData['image_uris']['png']
+            # Removes the '//' from the name of any split layout card (Wear // Tear)
             cardName = cardData['name'].replace("//", "").replace("  ", " ")
             cardFilename = cardSet + '-' + cardCollectorNum + '-' + cardName.replace(" ", "-").lower() + '.png'
             
